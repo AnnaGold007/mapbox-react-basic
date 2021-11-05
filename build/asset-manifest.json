@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/mapbox-react-basic/static/css/main.b50ea570.chunk.css",
+    "main.js": "/mapbox-react-basic/static/js/main.0350e29d.chunk.js",
+    "main.js.map": "/mapbox-react-basic/static/js/main.0350e29d.chunk.js.map",
+    "runtime-main.js": "/mapbox-react-basic/static/js/runtime-main.72f8d96c.js",
+    "runtime-main.js.map": "/mapbox-react-basic/static/js/runtime-main.72f8d96c.js.map",
+    "static/js/2.843ea48b.chunk.js": "/mapbox-react-basic/static/js/2.843ea48b.chunk.js",
+    "static/js/2.843ea48b.chunk.js.map": "/mapbox-react-basic/static/js/2.843ea48b.chunk.js.map",
+    "index.html": "/mapbox-react-basic/index.html",
+    "static/css/main.b50ea570.chunk.css.map": "/mapbox-react-basic/static/css/main.b50ea570.chunk.css.map",
+    "static/js/2.843ea48b.chunk.js.LICENSE.txt": "/mapbox-react-basic/static/js/2.843ea48b.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.72f8d96c.js",
+    "static/js/2.843ea48b.chunk.js",
+    "static/css/main.b50ea570.chunk.css",
+    "static/js/main.0350e29d.chunk.js"
+  ]
+}
