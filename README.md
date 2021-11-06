@@ -8,5 +8,6 @@
 ## MapBox Map with
 
 - Navigation Tool
-- MapboxGeocoder using a custom HTML rendering function
+- MapboxGeocoder
+- MapboxDraw
 - Sidebar with center point and Zoom level
