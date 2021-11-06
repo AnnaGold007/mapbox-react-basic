@@ -1,23 +1,20 @@
 {
   "files": {
     "main.css": "/mapbox-react-basic/static/css/main.cd612720.chunk.css",
-    "main.js": "/mapbox-react-basic/static/js/main.bce3ac5a.chunk.js",
-    "main.js.map": "/mapbox-react-basic/static/js/main.bce3ac5a.chunk.js.map",
+    "main.js": "/mapbox-react-basic/static/js/main.5398f388.chunk.js",
+    "main.js.map": "/mapbox-react-basic/static/js/main.5398f388.chunk.js.map",
     "runtime-main.js": "/mapbox-react-basic/static/js/runtime-main.72f8d96c.js",
     "runtime-main.js.map": "/mapbox-react-basic/static/js/runtime-main.72f8d96c.js.map",
-    "static/css/2.f0a50d26.chunk.css": "/mapbox-react-basic/static/css/2.f0a50d26.chunk.css",
-    "static/js/2.e8e4c961.chunk.js": "/mapbox-react-basic/static/js/2.e8e4c961.chunk.js",
-    "static/js/2.e8e4c961.chunk.js.map": "/mapbox-react-basic/static/js/2.e8e4c961.chunk.js.map",
+    "static/js/2.c4fba49d.chunk.js": "/mapbox-react-basic/static/js/2.c4fba49d.chunk.js",
+    "static/js/2.c4fba49d.chunk.js.map": "/mapbox-react-basic/static/js/2.c4fba49d.chunk.js.map",
     "index.html": "/mapbox-react-basic/index.html",
-    "static/css/2.f0a50d26.chunk.css.map": "/mapbox-react-basic/static/css/2.f0a50d26.chunk.css.map",
     "static/css/main.cd612720.chunk.css.map": "/mapbox-react-basic/static/css/main.cd612720.chunk.css.map",
-    "static/js/2.e8e4c961.chunk.js.LICENSE.txt": "/mapbox-react-basic/static/js/2.e8e4c961.chunk.js.LICENSE.txt"
+    "static/js/2.c4fba49d.chunk.js.LICENSE.txt": "/mapbox-react-basic/static/js/2.c4fba49d.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.72f8d96c.js",
-    "static/css/2.f0a50d26.chunk.css",
-    "static/js/2.e8e4c961.chunk.js",
+    "static/js/2.c4fba49d.chunk.js",
     "static/css/main.cd612720.chunk.css",
-    "static/js/main.bce3ac5a.chunk.js"
+    "static/js/main.5398f388.chunk.js"
   ]
 }

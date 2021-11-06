@@ -1,19 +1,14 @@
 import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
-import Geocoder from 'mapbox-gl-geocoder'
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import './Map.css';
-import 'mapbox-gl/dist/mapbox-gl.css'
-//import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css'
-import Tooltip from './components/Tooltip';
-import ReactDOM from 'react-dom';
+
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoiYW5uYWdvbGQwMDciLCJhIjoiY2t2bTNsajF2MWNiMDJ1dGtxM2lwOTZybSJ9.BvkgIPX-S7LrBwyqDMgiZw';
 
 const Map = () => {
   const mapContainerRef = useRef(null);
-  const tooltipRef = useRef(new mapboxgl.Popup({ offset: 15 }));
-
 
   const [lng, setLng] = useState(36.300);
   const [lat, setLat] = useState(31.400);
@@ -30,12 +25,23 @@ const Map = () => {
       logoPosition: 'bottom-left'
     });
 
-    map.addControl(
-      new Geocoder({
+    const geocoder = new MapboxGeocoder({
       accessToken: mapboxgl.accessToken,
+      types: 'poi',
+      // see https://docs.mapbox.com/api/search/#geocoding-response-object for information about the schema of each response feature
+      render: function (item) {
+      // extract the item's maki icon or use a default
+      const maki = item.properties.maki || 'marker';
+      return `<div class='geocoder-dropdown-item'>
+      <img class='geocoder-dropdown-icon' src='https://unpkg.com/@mapbox/maki@6.1.0/icons/${maki}-15.svg'>
+      <span class='geocoder-dropdown-text'>
+      ${item.text}
+      </span>
+      </div>`;
+      },
       mapboxgl: mapboxgl
-      }),'top-right'
-      );
+      });
+      map.addControl(geocoder);
 
     map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
