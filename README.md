@@ -8,3 +8,4 @@
 
 - Navigation Tool
 - MapboxGeocoder using a custom HTML rendering function
+- Sidebar with center point and Zoom level
