@@ -1,10 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
-import mapboxgl from 'mapbox-gl';
+import Mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import './Map.css';
 
 
-mapboxgl.accessToken =
+Mapboxgl.accessToken =
   'pk.eyJ1IjoiYW5uYWdvbGQwMDciLCJhIjoiY2t2bTNsajF2MWNiMDJ1dGtxM2lwOTZybSJ9.BvkgIPX-S7LrBwyqDMgiZw';
 
 const Map = () => {
@@ -16,7 +17,7 @@ const Map = () => {
 
   // Initialize map when component mounts
   useEffect(() => {
-    const map = new mapboxgl.Map({
+    const map = new Mapboxgl.Map({
       container: mapContainerRef.current,
       style: 'mapbox://styles/mapbox/streets-v11',
     //  style: 'mapbox://styles/annagold007/ckvm8uwn90pnp15mgbl2bstt0',
@@ -25,8 +26,21 @@ const Map = () => {
       logoPosition: 'bottom-left'
     });
 
+    const draw = new MapboxDraw({
+      displayControlsDefault: false,
+      // Select which mapbox-gl-draw control buttons to add to the map.
+      controls: {
+      polygon: true,
+      trash: true
+      },
+      // Set mapbox-gl-draw to draw by default.
+      // The user does not have to click the polygon control button first.
+      defaultMode: 'draw_polygon'
+      });
+      map.addControl(draw,'top-left');
+       
     const geocoder = new MapboxGeocoder({
-      accessToken: mapboxgl.accessToken,
+      accessToken: Mapboxgl.accessToken,
       types: 'poi',
       // see https://docs.mapbox.com/api/search/#geocoding-response-object for information about the schema of each response feature
       render: function (item) {
@@ -39,17 +53,18 @@ const Map = () => {
       </span>
       </div>`;
       },
-      mapboxgl: mapboxgl
+      mapboxgl: Mapboxgl
       });
       map.addControl(geocoder);
 
-    map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    map.addControl(new Mapboxgl.NavigationControl(), 'top-right');
 
     map.on('move', () => {
       setLng(map.getCenter().lng.toFixed(4));
       setLat(map.getCenter().lat.toFixed(4));
       setZoom(map.getZoom().toFixed(2));
     });
+    
 //  // change cursor to pointer when user hovers over a clickable feature
 //     map.on('mouseenter', e => {
 //       if (e.features.length) {
