@@ -3,6 +3,9 @@ import Mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import './Map.css';
+import * as turf from "@turf/turf";
+import { MapboxLegendControl, LegendOptions } from "@watergis/mapbox-gl-legend";
+import "@watergis/mapbox-gl-legend/css/styles.css";
 
 
 Mapboxgl.accessToken =
@@ -14,7 +17,7 @@ const Map = () => {
   const [lng, setLng] = useState(36.300);
   const [lat, setLat] = useState(31.400);
   const [zoom, setZoom] = useState(6.6);
-
+  const [rounded_area, setRounded_area] = useState(0);
   // Initialize map when component mounts
   useEffect(() => {
     const map = new Mapboxgl.Map({
@@ -30,14 +33,17 @@ const Map = () => {
       displayControlsDefault: false,
       // Select which mapbox-gl-draw control buttons to add to the map.
       controls: {
-      polygon: true,
-      trash: true
+       // point: true,
+       // line_string:true,
+        polygon: true,
+        trash: true
       },
       // Set mapbox-gl-draw to draw by default.
       // The user does not have to click the polygon control button first.
-      defaultMode: 'draw_polygon'
+      //defaultMode: 'simple_select'
+        defaultMode: 'draw_polygon'
       });
-      map.addControl(draw,'top-left');
+    map.addControl(draw,'top-left');
        
     const geocoder = new MapboxGeocoder({
       accessToken: Mapboxgl.accessToken,
@@ -64,43 +70,105 @@ const Map = () => {
       setLat(map.getCenter().lat.toFixed(4));
       setZoom(map.getZoom().toFixed(2));
     });
-    
-//  // change cursor to pointer when user hovers over a clickable feature
-//     map.on('mouseenter', e => {
-//       if (e.features.length) {
-//         map.getCanvas().style.cursor = 'pointer';
-//       }
-//     });
 
-//     // reset cursor to default when user is no longer hovering over a clickable feature
-//     map.on('mouseleave', () => {
-//       map.getCanvas().style.cursor = '';
-//     });
+    map.on('load', () => {
+          const layers = map.getStyle().layers;
+          // Find the index of the first symbol layer in the map style
+          let firstSymbolId;
+          for (const layer of layers) {
+              if (layer === 'symbol') {
+                  firstSymbolId = layer.id;
+                  break;
+              }
+          }
 
-//     // add tooltip when users mouse move over a point
-//     map.on('mousemove', e => {
-//       const features = map.queryRenderedFeatures(e.point);
-//       if (features.length) {
-//         const feature = features[0];
+          map.addSource('urban-areas', {
+              'type': 'geojson',
+              'data': 'https://docs.mapbox.com/mapbox-gl-js/assets/ne_50m_urban_areas.geojson'
+          });
+          map.addLayer(
+              {
+                  'id': 'urban-areas-fill',
+                  'type': 'fill',
+                  'source': 'urban-areas',
+                  'layout': {},
+                  'paint': {
+                      'fill-color': '#f08',
+                      'fill-opacity': 0.4
+                  }
+// This is the important part of this example: the addLayer
+// method takes 2 arguments: the layer as an object, and a string
+// representing another layer's name. if the other layer
+// exists in the stylesheet already, the new layer will be positioned
+// right before that layer in the stack, making it possible to put
+// 'overlays' anywhere in the layer stack.
+// Insert the layer beneath the first symbol layer.
+              },
+              firstSymbolId
+          );
 
-//         // Create tooltip node
-//         const tooltipNode = document.createElement('div');
-//         ReactDOM.render(<Tooltip feature={feature} />, tooltipNode);
 
-//         // Set tooltip on map
-//         tooltipRef.current
-//           .setLngLat(e.lngLat)
-//           .setDOMContent(tooltipNode)
-//           .addTo(map);
-//       }
-//     });
-  
+        const targets = {
+            pipeline: "Pipeline",
+            pipeline_annotation: "Pipeline Label",
+            meter: "Water Meter",
+            "flow meter": "Flow Meter",
+            valve: "Valve",
+            firehydrant: "Fire Hydrant",
+            washout: "Washout",
+            tank: "Tank",
+            tank_annotation: "Tank Label",
+            wtp: "WTP",
+            wtp_annotation: "WTP Label",
+            intake: "Intake",
+            intake_annotation: "Intake Label",
+            parcels: "Parcels",
+            parcels_annotation: "Parcels Label",
+            village: "Village",
+            village_annotation: "Village Label",
+            dma: "DMA",
+            "dma-annotation": "DMA Label",
+            "contour-line": "Countour",
+            "contour-label": "Contour Label",
+            hillshade: "Hillshade",
+            'urban-areas-fill': 'urban-areas-fill'
+        };
+
+        map.addControl(new MapboxLegendControl(targets), "top-right");
+
+    });
+
+    map.on('draw.create', updateArea);
+    map.on('draw.delete', updateArea);
+    map.on('draw.update', updateArea);
+
+      function updateArea(e) {
+          const data = draw.getAll();
+          const answer = document.getElementById('calculation-box');
+          if (data.features.length > 0) {
+              const area = turf.area(data);
+            // Restrict the area to 2 decimal points.
+              const r_area = Math.round(area * 100) / 100;
+              setRounded_area(r_area.toFixed(2));
+          } else {map.getZoom()
+
+              if (e.type !== 'draw.delete')
+                  setRounded_area(0);
+          }
+      }
     // Clean up on unmount
     return () => map.remove();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+
+
+
+
   return (
     <div>
+       <div class="calculation-box">
+          <p>Area: {rounded_area} square meters</p>
+        </div>
       <div className='sidebarStyle'>
         <div>
           Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
@@ -108,6 +176,7 @@ const Map = () => {
       </div>
       <div className='map-container' ref={mapContainerRef} />
     </div>
+    
   );
 };
 

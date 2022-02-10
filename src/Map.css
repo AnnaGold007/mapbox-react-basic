@@ -22,3 +22,22 @@
     font-family: 'Open Sans',sans-serif;
     border-radius: 4px;
   }
+  .calculation-box {
+    display: inline-block;
+    z-index: 1 !important;
+    height: 75px;
+    width: 150px;
+    position: absolute;
+    bottom: 40px;
+    left: 30px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    text-align: center;
+    border-radius: 4px;
+    }
+     
+    p {
+    font-family: 'Open Sans';
+    margin: 0;
+    font-size: 13px;
+    }
